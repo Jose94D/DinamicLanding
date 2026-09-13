@@ -1,0 +1,31 @@
+{% if carousel %}
+<div id="landingCarousel" class="carousel slide" data-bs-ride="carousel">
+    
+    <!-- Indicadores -->
+    <div class="carousel-indicators">
+        {% for img in carousel %}
+        <button type="button" data-bs-target="#landingCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}"></button>
+        {% endfor %}
+    </div>
+
+    <!-- Diapositivas -->
+    <div class="carousel-inner">
+        {% for img in carousel %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <!-- Usamos object-fit para que la imagen cubra el contenedor limpiamente -->
+            <img src="{{ url_for('static', filename='uploads/carousel/' ~ img.nombre_archivo) }}" class="d-block w-100" style="height: 60vh; object-fit: cover;" alt="Diapositiva">
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Controles -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#landingCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#landingCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+{% endif %}

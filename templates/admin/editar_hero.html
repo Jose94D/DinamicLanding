@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Hero - CMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">Volver al Dashboard</a>
+        </div>
+    </nav>
+    <div class="container" style="max-width: 600px;">
+        <h3>Editar Módulo: Hero</h3>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Título Principal</label>
+                        <input type="text" name="titulo" class="form-control" value="{{ hero.titulo }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subtítulo</label>
+                        <input type="text" name="subtitulo" class="form-control" value="{{ hero.subtitulo }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Texto del Botón</label>
+                        <input type="text" name="texto_boton" class="form-control" value="{{ hero.texto_boton }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">URL del Botón</label>
+                        <input type="text" name="url_boton" class="form-control" value="{{ hero.url_boton }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<header class="bg-light text-center py-5 border-bottom">
+    <div class="container my-5">
+        <h1 class="display-4 fw-bold">{{ hero.titulo }}</h1>
+        <p class="lead mb-4">{{ hero.subtitulo }}</p>
+        {% if hero.texto_boton and hero.url_boton %}
+            <a href="{{ hero.url_boton }}" class="btn btn-primary btn-lg">{{ hero.texto_boton }}</a>
+        {% endif %}
+    </div>
+</header>

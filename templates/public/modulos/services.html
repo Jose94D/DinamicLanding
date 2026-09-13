@@ -1,0 +1,33 @@
+{% if services %}
+<section class="py-5 bg-white" id="services">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Nuestros Servicios</h2>
+                <p class="lead text-muted">Lo que podemos hacer por ti.</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for s in services %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4 transition-hover">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi {{ s.icono }} text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h4 class="card-title fw-bold mb-3">{{ s.titulo }}</h4>
+                        <p class="card-text text-muted">{{ s.descripcion }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .transition-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .transition-hover:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+</style>
+{% endif %}
