@@ -1,3 +1,5 @@
+<img width="2064" height="512" alt="DynamicLanding_Banner" src="https://github.com/user-attachments/assets/71126984-2098-4889-a87f-ddfca9c8fa28" />
+
 # DynamicLanding
 
 > CMS Modular para Landing Pages Comerciales
@@ -113,7 +115,12 @@ DynamicLanding/
 ## Modelo de Base de Datos
 
 El sistema utiliza un esquema relacional optimizado en SQLite para gestionar contenidos, módulos, blog y analíticas de forma limpia y sin redundancias:
+
+
 <img width="8192" height="2326" alt="ER_model" src="https://github.com/user-attachments/assets/193edd9b-33c4-40e3-9a94-db1eb9a61e91" />
+<p align="center">
+  <em>Figura 1: Modelo relacional de la base de datos.</em>
+</p>
 
 ---
 
