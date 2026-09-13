@@ -1,0 +1,27 @@
+{% if blog %}
+<section class="py-5 bg-light" id="noticias">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Últimas Novedades</h2>
+                <p class="lead text-muted">Mantente al tanto de nuestras actualizaciones.</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for articulo in blog %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold">{{ articulo.titulo }}</h5>
+                        <h6 class="card-subtitle mb-3 text-muted" style="font-size: 0.85rem;">{{ articulo.fecha_publicacion }}</h6>
+                        <p class="card-text text-muted flex-grow-1">{{ articulo.extracto }}</p>
+                        <a href="{{ url_for('ver_articulo', id=articulo.id) }}" class="btn btn-outline-primary mt-3 align-self-start">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

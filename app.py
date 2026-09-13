@@ -56,10 +56,25 @@ def index():
     
     hero_data = conn.execute('SELECT * FROM contenido_hero WHERE id = 1').fetchone()
     carousel_data = conn.execute('SELECT * FROM contenido_carousel ORDER BY orden ASC').fetchall()
-    services_data = conn.execute('SELECT * FROM contenido_servicios ORDER BY orden ASC').fetchall()
+    services_data = conn.execute('SELECT * FROM contenido_services ORDER BY orden ASC').fetchall()
+    blog_data = conn.execute('SELECT * FROM contenido_blog ORDER BY fecha_publicacion DESC LIMIT 3').fetchall()
+    about_data = conn.execute('SELECT * FROM contenido_about WHERE id = 1').fetchone()
+
     
     conn.close()
-    return render_template('public/index.html', seo=seo, modulos=modulos_activos, hero=hero_data, carousel=carousel_data, services=services_data)
+    return render_template('public/index.html', seo=seo, modulos=modulos_activos, hero=hero_data, carousel=carousel_data, services=services_data, blog=blog_data, about=about_data)
+
+@app.route('/articulo/<int:id>')
+def ver_articulo(id):
+    conn = get_db_connection()
+    articulo = conn.execute('SELECT * FROM contenido_blog WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    
+    if not articulo:
+        return "Artículo no encontrado", 404
+        
+    return render_template('public/post.html', articulo=articulo)
+
 # ==========================================
 # 5. RUTAS DE AUTENTICACIÓN
 # ==========================================
@@ -219,6 +234,57 @@ def eliminar_servicio(id):
     conn.close()
     flash("Servicio eliminado.", "success")
     return redirect(url_for('editar_servicios'))
+
+@app.route('/admin/contenido/blog', methods=['GET', 'POST'])
+@login_required
+def editar_blog():
+    conn = get_db_connection()
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        extracto = request.form['extracto']
+        contenido = request.form['contenido']
+        
+        conn.execute('INSERT INTO contenido_blog (titulo, extracto, contenido) VALUES (?, ?, ?)', 
+                     (titulo, extracto, contenido))
+        conn.commit()
+        flash("Artículo publicado exitosamente.", "success")
+        return redirect(url_for('editar_blog'))
+        
+    articulos = conn.execute('SELECT * FROM contenido_blog ORDER BY fecha_publicacion DESC').fetchall()
+    conn.close()
+    return render_template('admin/editar_blog.html', articulos=articulos)
+
+@app.route('/admin/contenido/blog/eliminar/<int:id>')
+@login_required
+def eliminar_articulo(id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM contenido_blog WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash("Artículo eliminado.", "success")
+    return redirect(url_for('editar_blog'))
+
+@app.route('/admin/contenido/about', methods=['GET', 'POST'])
+@login_required
+def editar_about():
+    conn = get_db_connection()
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        descripcion = request.form['descripcion']
+        mision = request.form['mision']
+        
+        conn.execute('''
+            UPDATE contenido_about 
+            SET titulo = ?, descripcion = ?, mision = ? 
+            WHERE id = 1
+        ''', (titulo, descripcion, mision))
+        conn.commit()
+        flash("Sección Sobre Nosotros actualizada.", "success")
+        return redirect(url_for('editar_about'))
+        
+    nosotros = conn.execute('SELECT * FROM contenido_about WHERE id = 1').fetchone()
+    conn.close()
+    return render_template('admin/editar_about.html', nosotros=nosotros)
 
 # ==========================================
 # 8. ARRANQUE DE LA APLICACIÓN

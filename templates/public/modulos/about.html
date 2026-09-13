@@ -1,0 +1,25 @@
+{% if about %}
+<section class="py-5" id="about">
+    <div class="container py-4">
+        <div class="row align-items-center">
+            <!-- Columna Izquierda: Título y Misión (Destacado) -->
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <h2 class="fw-bold display-6 text-dark mb-4">{{ about.titulo }}</h2>
+                <div class="p-4 bg-light rounded border-start border-primary border-4">
+                    <p class="fst-italic text-muted mb-0 fs-5">
+                        "{{ about.mision }}"
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Columna Derecha: Descripción -->
+            <div class="col-lg-6 offset-lg-1">
+                <div class="text-secondary" style="line-height: 1.8; font-size: 1.1rem;">
+                    <!-- Se usa pre-wrap para respetar los saltos de línea del textarea -->
+                    <div style="white-space: pre-wrap;">{{ about.descripcion }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
