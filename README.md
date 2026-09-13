@@ -109,6 +109,11 @@ DynamicLanding/
         ├── Landing Page
         └── Blog
 ```
+---
+## Modelo de Base de Datos
+
+El sistema utiliza un esquema relacional optimizado en SQLite para gestionar contenidos, módulos, blog y analíticas de forma limpia y sin redundancias:
+<img width="8192" height="2326" alt="ER_model" src="https://github.com/user-attachments/assets/193edd9b-33c4-40e3-9a94-db1eb9a61e91" />
 
 ---
 
