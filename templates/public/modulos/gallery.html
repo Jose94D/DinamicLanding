@@ -1,0 +1,58 @@
+{% if gallery %}
+<section class="py-5 bg-white" id="gallery">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold">Nuestros Trabajos</h2>
+                <p class="lead text-muted">Un vistazo a lo que hemos hecho.</p>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            {% for item in gallery %}
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="{{ url_for('static', filename='uploads/gallery/' ~ item.nombre_archivo) }}"
+                   class="d-block gallery-item"
+                   data-bs-toggle="modal"
+                   data-bs-target="#galleryModal"
+                   data-img="{{ url_for('static', filename='uploads/gallery/' ~ item.nombre_archivo) }}"
+                   data-caption="{{ item.titulo }}">
+                    <div class="ratio ratio-1x1 overflow-hidden rounded shadow-sm">
+                        <img src="{{ url_for('static', filename='uploads/gallery/' ~ item.nombre_archivo) }}"
+                             class="w-100 h-100" style="object-fit: cover;" alt="{{ item.titulo }}">
+                    </div>
+                    {% if item.titulo %}
+                    <p class="text-center text-muted small mt-2 mb-0">{{ item.titulo }}</p>
+                    {% endif %}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modal de vista ampliada -->
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark border-0">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                <img id="galleryModalImg" src="" class="w-100" style="max-height: 80vh; object-fit: contain;" alt="">
+                <p id="galleryModalCaption" class="text-white text-center py-3 mb-0"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Rellena el modal con la imagen y el título en los que se hizo click
+    document.addEventListener('DOMContentLoaded', function () {
+        var galleryModal = document.getElementById('galleryModal');
+        if (galleryModal) {
+            galleryModal.addEventListener('show.bs.modal', function (event) {
+                var trigger = event.relatedTarget;
+                document.getElementById('galleryModalImg').src = trigger.getAttribute('data-img');
+                document.getElementById('galleryModalCaption').textContent = trigger.getAttribute('data-caption') || '';
+            });
+        }
+    });
+</script>
+{% endif %}

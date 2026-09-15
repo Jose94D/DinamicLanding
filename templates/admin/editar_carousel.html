@@ -7,7 +7,7 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mb-3">Volver al Dashboard</a>
+        <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary mb-3">Volver al Dashboard</a>
         <h3>Gestor de Carrusel</h3>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -36,7 +36,7 @@
                 <div class="card">
                     <img src="{{ url_for('static', filename='uploads/carousel/' ~ img.nombre_archivo) }}" class="card-img-top" alt="Diapositiva">
                     <div class="card-body text-center">
-                        <a href="{{ url_for('eliminar_carousel', id=img.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas borrarla?')">Eliminar</a>
+                        <a href="{{ url_for('content.eliminar_carousel', id=img.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas borrarla?')">Eliminar</a>
                     </div>
                 </div>
             </div>

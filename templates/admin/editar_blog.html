@@ -7,7 +7,7 @@
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mb-3">Volver al Dashboard</a>
+        <a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary mb-3">Volver al Dashboard</a>
         <h3>Redactar Nuevo Artículo</h3>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -47,8 +47,8 @@
                     <small class="text-muted">Publicado el: {{ a.fecha_publicacion }}</small>
                 </div>
                 <div>
-                    <a href="{{ url_for('ver_articulo', id=a.id) }}" target="_blank" class="btn btn-outline-secondary btn-sm">Ver</a>
-                    <a href="{{ url_for('eliminar_articulo', id=a.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar artículo?')">Eliminar</a>
+                    <a href="{{ url_for('public.ver_articulo', id=a.id) }}" target="_blank" class="btn btn-outline-secondary btn-sm">Ver</a>
+                    <a href="{{ url_for('content.eliminar_articulo', id=a.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar artículo?')">Eliminar</a>
                 </div>
             </div>
             {% else %}
