@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Redes Sociales - CMS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard.dashboard') }}">DynamicLanding CMS</a>
+            <div class="d-flex text-white align-items-center">
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light btn-sm">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                {% include 'admin/sidebar.html' %}
+            </div>
+
+            <div class="col-md-9">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h4 class="mb-0"><i class="bi bi-instagram text-danger me-2"></i>Instagram</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info small">
+                            Necesitas una cuenta de Instagram <strong>Business</strong> o <strong>Creator</strong> vinculada
+                            a una página de Facebook, y un <strong>Access Token</strong> de larga duración generado desde
+                            <a href="https://developers.facebook.com/" target="_blank">Meta for Developers</a>.
+                            El "ID de cuenta" es el <code>Instagram Business Account ID</code> (no tu @usuario).
+                        </div>
+
+                        <form method="POST">
+                            <input type="hidden" name="plataforma" value="instagram">
+                            <div class="mb-3">
+                                <label class="form-label">Access Token</label>
+                                <input type="password" class="form-control" name="access_token"
+                                       value="{{ redes_por_plataforma.instagram.access_token if redes_por_plataforma.instagram else '' }}"
+                                       placeholder="EAAxxxxxxxxxxxxx...">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Instagram Business Account ID</label>
+                                <input type="text" class="form-control" name="account_id"
+                                       value="{{ redes_por_plataforma.instagram.account_id if redes_por_plataforma.instagram else '' }}"
+                                       placeholder="17841400000000000">
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <input class="form-check-input" type="checkbox" name="activo_api" id="activo_api"
+                                       {% if redes_por_plataforma.instagram and redes_por_plataforma.instagram.activo_api == 1 %}checked{% endif %}>
+                                <label class="form-check-label" for="activo_api">
+                                    Mostrar el feed en la landing (módulo "social" también debe estar activo en el Dashboard)
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar Configuración</button>
+                        </form>
+                    </div>
+                </div>
+
+                {% if redes_por_plataforma.instagram and redes_por_plataforma.instagram.activo_api == 1 %}
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle-fill me-1"></i>
+                    Instagram está activo. Si no ves la publicación en tu landing, verifica que el token no haya expirado
+                    y que el módulo "social" esté activado en el Dashboard.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

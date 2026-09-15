@@ -16,7 +16,7 @@
                         <h5 class="card-title fw-bold">{{ articulo.titulo }}</h5>
                         <h6 class="card-subtitle mb-3 text-muted" style="font-size: 0.85rem;">{{ articulo.fecha_publicacion }}</h6>
                         <p class="card-text text-muted flex-grow-1">{{ articulo.extracto }}</p>
-                        <a href="{{ url_for('ver_articulo', id=articulo.id) }}" class="btn btn-outline-primary mt-3 align-self-start">Leer más</a>
+                        <a href="{{ url_for('public.ver_articulo', id=articulo.id) }}" class="btn btn-outline-primary mt-3 align-self-start">Leer más</a>
                     </div>
                 </div>
             </div>

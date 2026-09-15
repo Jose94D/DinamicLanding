@@ -1,3 +1,5 @@
+import os
+import secrets
 import sqlite3
 from werkzeug.security import generate_password_hash
 
@@ -158,6 +160,20 @@ def inicializar_base_datos():
     ''')
 
     # ==========================================================
+    # MENSAJES DEL FORMULARIO DE CONTACTO
+    # ==========================================================
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS mensajes_contacto (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL,
+            email TEXT NOT NULL,
+            mensaje TEXT NOT NULL,
+            fecha_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
+            leido INTEGER NOT NULL DEFAULT 0
+        )
+    ''')
+
+    # ==========================================================
     # DATOS POR DEFECTO
     # ==========================================================
 
@@ -192,13 +208,29 @@ def inicializar_base_datos():
         VALUES (1, 'Mi Landing Page', 'Descripción por defecto para motores de búsqueda')
     ''')
 
-    # Usuario admin por defecto (usuario: admin / contraseña: admin123)
-    # ⚠️ Cambia esta contraseña de inmediato en producción.
+    # Usuario admin: por defecto usa ADMIN_USERNAME/ADMIN_PASSWORD del entorno
+    # si están definidas. Si no, genera una contraseña aleatoria y la muestra
+    # UNA sola vez en consola — no queda guardada en ningún archivo.
     cursor.execute('SELECT COUNT(*) FROM admin')
     if cursor.fetchone()[0] == 0:
+        username = os.environ.get('ADMIN_USERNAME', 'admin')
+        password = os.environ.get('ADMIN_PASSWORD')
+        password_generada = password is None
+        if password_generada:
+            password = secrets.token_urlsafe(12)
+
         cursor.execute('''
             INSERT INTO admin (username, password_hash) VALUES (?, ?)
-        ''', ('admin', generate_password_hash('admin123')))
+        ''', (username, generate_password_hash(password)))
+
+        if password_generada:
+            print(
+                "\n🔑 Se creó el usuario admin con una contraseña generada automáticamente:\n"
+                f"    Usuario:    {username}\n"
+                f"    Contraseña: {password}\n"
+                "    Guárdala ahora — no se volverá a mostrar. Cámbiala en '/admin/cambiar-password'\n"
+                "    después de tu primer inicio de sesión.\n"
+            )
 
     conexion.commit()
     conexion.close()

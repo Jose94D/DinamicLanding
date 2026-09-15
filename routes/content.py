@@ -290,3 +290,36 @@ def eliminar_articulo(id):
     conn.close()
     flash("Artículo eliminado.", "success")
     return redirect(url_for('content.editar_blog'))
+
+
+@content_bp.route('/blog/editar/<int:id>', methods=['GET', 'POST'])
+@login_required
+def editar_articulo(id):
+    conn = get_db_connection()
+    articulo = conn.execute('SELECT * FROM contenido_blog WHERE id = ?', (id,)).fetchone()
+
+    if not articulo:
+        conn.close()
+        flash("El artículo que intentas editar no existe.", "danger")
+        return redirect(url_for('content.editar_blog'))
+
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        extracto = request.form['extracto']
+        contenido = request.form['contenido']
+        activo = 1 if request.form.get('activo') else 0
+
+        # El slug NO se regenera al editar: así no se rompen links ya compartidos
+        # del artículo, aunque el usuario cambie el título.
+        conn.execute('''
+            UPDATE contenido_blog
+            SET titulo = ?, extracto = ?, contenido = ?, activo = ?
+            WHERE id = ?
+        ''', (titulo, extracto, contenido, activo, id))
+        conn.commit()
+        conn.close()
+        flash("Artículo actualizado exitosamente.", "success")
+        return redirect(url_for('content.editar_blog'))
+
+    conn.close()
+    return render_template('admin/editar_articulo.html', articulo=articulo)

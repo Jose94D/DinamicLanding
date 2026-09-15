@@ -3,10 +3,11 @@
    Se incluye con: {% include 'admin/_sidebar.html' %}
    Usa request.endpoint (disponible automáticamente en Jinja
    dentro de una vista de Flask) para marcar el link activo.
+   Los endpoints van con el prefijo del blueprint: 'blueprint.funcion'
    ========================================================== #}
 <div class="list-group">
     <a href="{{ url_for('dashboard.dashboard') }}"
-       class="list-group-item list-group-item-action {% if request.endpoint == 'dashboard' %}active{% endif %}">
+       class="list-group-item list-group-item-action {% if request.endpoint == 'dashboard.dashboard' %}active{% endif %}">
         <i class="bi bi-grid-1x2-fill me-2"></i>Diseño y Visibilidad
     </a>
 
@@ -15,48 +16,66 @@
         <span><i class="bi bi-pencil-square me-2"></i>Contenidos</span>
         <i class="bi bi-chevron-down small"></i>
     </a>
-    <div class="collapse {% if request.endpoint in ['editar_hero', 'editar_about', 'editar_carousel', 'editar_servicios', 'editar_gallery', 'editar_testimonials'] %}show{% endif %}"
+    <div class="collapse {% if request.endpoint in ['content.editar_hero', 'content.editar_about', 'content.editar_carousel', 'content.editar_servicios', 'content.editar_gallery', 'content.editar_testimonials'] %}show{% endif %}"
          id="contenidos">
         <div class="list-group ms-3">
             <a href="{{ url_for('content.editar_hero') }}"
-               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'editar_hero' %}active{% endif %}">
+               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'content.editar_hero' %}active{% endif %}">
                 Hero / Banner
             </a>
             <a href="{{ url_for('content.editar_about') }}"
-               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'editar_about' %}active{% endif %}">
+               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'content.editar_about' %}active{% endif %}">
                 Sobre Nosotros
             </a>
             <a href="{{ url_for('content.editar_carousel') }}"
-               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'editar_carousel' %}active{% endif %}">
+               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'content.editar_carousel' %}active{% endif %}">
                 Carrusel de Imágenes
             </a>
             <a href="{{ url_for('content.editar_servicios') }}"
-               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'editar_servicios' %}active{% endif %}">
+               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'content.editar_servicios' %}active{% endif %}">
                 Servicios
             </a>
             <a href="{{ url_for('content.editar_gallery') }}"
-               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'editar_gallery' %}active{% endif %}">
+               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'content.editar_gallery' %}active{% endif %}">
                 Galería
             </a>
             <a href="{{ url_for('content.editar_testimonials') }}"
-               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'editar_testimonials' %}active{% endif %}">
+               class="list-group-item list-group-item-action border-0 {% if request.endpoint == 'content.editar_testimonials' %}active{% endif %}">
                 Testimonios
             </a>
         </div>
     </div>
 
     <a href="{{ url_for('content.editar_blog') }}"
-       class="list-group-item list-group-item-action {% if request.endpoint in ['editar_blog', 'ver_articulo'] %}active{% endif %}">
+       class="list-group-item list-group-item-action {% if request.endpoint in ['content.editar_blog', 'public.ver_articulo'] %}active{% endif %}">
         <i class="bi bi-journal-text me-2"></i>Blog
     </a>
 
+    <a href="{{ url_for('messages.listar_mensajes') }}"
+       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center {% if request.endpoint and request.endpoint.startswith('messages.') %}active{% endif %}">
+        <span><i class="bi bi-envelope-fill me-2"></i>Mensajes</span>
+        {% if no_leidos_sidebar %}
+        <span class="badge bg-danger rounded-pill">{{ no_leidos_sidebar }}</span>
+        {% endif %}
+    </a>
+
+    <a href="{{ url_for('social.editar_redes') }}"
+       class="list-group-item list-group-item-action {% if request.endpoint == 'social.editar_redes' %}active{% endif %}">
+        <i class="bi bi-instagram me-2"></i>Redes Sociales
+    </a>
+
     <a href="{{ url_for('seo.editar_seo') }}"
-       class="list-group-item list-group-item-action {% if request.endpoint == 'editar_seo' %}active{% endif %}">
+       class="list-group-item list-group-item-action {% if request.endpoint == 'seo.editar_seo' %}active{% endif %}">
         <i class="bi bi-search me-2"></i>Configuración SEO
     </a>
 
     <a href="{{ url_for('analytics.analiticas') }}"
        class="list-group-item list-group-item-action {% if request.endpoint == 'analytics.analiticas' %}active{% endif %}">
         <i class="bi bi-bar-chart-fill me-2"></i>Analíticas
+    </a>
+
+    <a href="{{ url_for('auth.cambiar_password') }}"
+       class="list-group-item list-group-item-action {% if request.endpoint == 'auth.cambiar_password' %}active{% endif %}">
+        <i class="bi bi-shield-lock-fill me-2"></i>Cambiar Contraseña
     </a>
 </div>

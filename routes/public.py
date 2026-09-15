@@ -1,7 +1,10 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+import re
 from extensions import get_db_connection
 
 public_bp = Blueprint('public', __name__)
+
+EMAIL_REGEX = re.compile(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
 
 
 @public_bp.before_request
@@ -55,3 +58,33 @@ def ver_articulo(id):
         return "Artículo no encontrado", 404
 
     return render_template('public/post.html', articulo=articulo)
+
+
+@public_bp.route('/contacto', methods=['POST'])
+def enviar_contacto():
+    nombre = request.form.get('nombre', '').strip()
+    email = request.form.get('email', '').strip()
+    mensaje = request.form.get('mensaje', '').strip()
+
+    # Honeypot anti-spam: campo oculto que un humano nunca llena
+    if request.form.get('sitio_web'):
+        return redirect(url_for('public.index') + '#contact')
+
+    if not nombre or not email or not mensaje:
+        flash("Por favor completa todos los campos del formulario.", "danger")
+        return redirect(url_for('public.index') + '#contact')
+
+    if not EMAIL_REGEX.match(email):
+        flash("Por favor ingresa un correo electrónico válido.", "danger")
+        return redirect(url_for('public.index') + '#contact')
+
+    conn = get_db_connection()
+    conn.execute(
+        'INSERT INTO mensajes_contacto (nombre, email, mensaje) VALUES (?, ?, ?)',
+        (nombre, email, mensaje)
+    )
+    conn.commit()
+    conn.close()
+
+    flash("¡Gracias! Tu mensaje fue enviado correctamente, te contactaremos pronto.", "success")
+    return redirect(url_for('public.index') + '#contact')

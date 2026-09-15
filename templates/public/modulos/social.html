@@ -1,0 +1,36 @@
+{% if social %}
+<section class="py-5 bg-white" id="social">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="fw-bold"><i class="bi bi-instagram text-danger me-2"></i>Síguenos en Instagram</h2>
+                <p class="lead text-muted">Nuestra publicación más reciente.</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <a href="{{ social.permalink }}" target="_blank" rel="noopener" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm">
+                        {% if social.imagen_mostrar %}
+                        <img src="{{ social.imagen_mostrar }}" class="card-img-top" alt="Última publicación de Instagram">
+                        {% endif %}
+                        {% if social.media_type == 'VIDEO' %}
+                        <span class="badge bg-dark position-absolute top-0 end-0 m-2">
+                            <i class="bi bi-play-fill"></i> Video
+                        </span>
+                        {% endif %}
+                        {% if social.caption %}
+                        <div class="card-body">
+                            <p class="card-text text-dark small mb-0">
+                                {{ social.caption[:150] }}{% if social.caption|length > 150 %}...{% endif %}
+                            </p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
